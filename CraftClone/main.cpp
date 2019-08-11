@@ -12,16 +12,15 @@
 int main()
 {
 
-	std::shared_ptr<Core> core = std::make_shared<Core>();
+	std::unique_ptr<Core> core = std::make_unique<Core>();
 	core->createWindow("Test", glm::vec2(1366.0f, 768.0f));
-
 
 	std::shared_ptr<Renderer> renderer;
 
 	renderer = core->getRenderer();
 
 
-	for (;;) {
+	while(!core->windowShouldClose()) {
 		renderer->begin();
 
 
@@ -29,6 +28,13 @@ int main()
 
 		renderer->end();
 	}
+
+
+	renderer = nullptr;
+	core = nullptr;
+
+	system("pause");
+
 
     std::cout << "Hello World!\n"; 
 }

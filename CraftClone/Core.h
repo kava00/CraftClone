@@ -4,6 +4,7 @@
 #include "Logger.h"
 #include "Renderer.h"
 
+
 class Core
 {
 public:
@@ -14,8 +15,12 @@ public:
 	void resizeWindow(const glm::vec2& dim);
 	void changeTitle(const std::string& title);
 
-	std::shared_ptr<Renderer> getRenderer();
+	bool windowShouldClose() { return glfwWindowShouldClose(mWindow); }
 
+	std::shared_ptr<Renderer> getRenderer();
+	GLFWwindow* getGlfwWindow() { return mWindow; }
+
+	void glfwResizeCallback(GLFWwindow* window, int width, int height);
 private:
 	GLFWwindow* mWindow;
 
@@ -24,4 +29,5 @@ private:
 	std::string mTitle;
 	glm::vec2 mDimensions;
 };
+
 

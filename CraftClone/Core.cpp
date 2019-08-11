@@ -1,9 +1,17 @@
 #include "Core.h"
 
-
+namespace Global {
+	Core* core; // USED FOR GLFW CALLBACKS
+	void glfwResizeCallbackTramp(GLFWwindow* window, int width, int height) {
+		if (core) {
+			core->glfwResizeCallback(window, width, height);
+		}
+	}
+}
 
 Core::Core()
 {
+	Global::core = this;
 }
 
 
@@ -46,6 +54,8 @@ void Core::createWindow(const std::string & title, const glm::vec2 & dim)
 		glfwTerminate();
 	}
 
+	glfwSetFramebufferSizeCallback(mWindow, Global::glfwResizeCallbackTramp);
+
 
 	ilInit();
 
@@ -81,4 +91,10 @@ std::shared_ptr<Renderer> Core::getRenderer()
 		getLogger()->error("Cannot get renderer. Window not created.");
 		return nullptr;
 	}
+}
+
+void Core::glfwResizeCallback(GLFWwindow * window, int width, int height)
+{
+	resizeWindow(glm::vec2(width, height));
+	//getLogger()->debug(format("%i,%i", width, height));
 }
