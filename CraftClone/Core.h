@@ -23,6 +23,7 @@ public:
 	void glfwResizeCallback(GLFWwindow* window, int width, int height);
 
 	Settings loadSettings(const std::string& path);
+	Settings getSettings() { return mSettings; }
 private:
 	Settings mSettings;
 	GLFWwindow* mWindow;
