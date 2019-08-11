@@ -13,7 +13,7 @@ int main()
 {
 
 	std::unique_ptr<Core> core = std::make_unique<Core>();
-	core->createWindow("Test", glm::vec2(1366.0f, 768.0f));
+	core->createWindow("Test");
 
 	std::shared_ptr<Renderer> renderer;
 

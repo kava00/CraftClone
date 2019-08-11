@@ -22,6 +22,13 @@
 #include <IL/il.h>
 #include <IL/ilu.h>
 
+extern "C"
+{
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
+}
+
 
 #include <string>
 #include <stdio.h>
@@ -31,6 +38,9 @@
 #include <sstream>
 #include <fstream>
 #include <wrl.h>
+
+
+#include "Logger.h"
 
 using namespace glm;
 
@@ -61,4 +71,10 @@ inline std::string format(const char* fmt, ...) {
 struct Vertex {
 	glm::vec3 pos;
 	glm::vec2 uvs;
+};
+
+
+struct Settings {
+	U32 width;
+	U32 height;
 };

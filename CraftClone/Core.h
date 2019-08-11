@@ -11,7 +11,7 @@ public:
 	Core();
 	~Core();
 
-	void createWindow(const std::string& title, const glm::vec2& dim);
+	void createWindow(const std::string& title, const glm::vec2& dim = glm::vec2(0, 0));
 	void resizeWindow(const glm::vec2& dim);
 	void changeTitle(const std::string& title);
 
@@ -21,7 +21,10 @@ public:
 	GLFWwindow* getGlfwWindow() { return mWindow; }
 
 	void glfwResizeCallback(GLFWwindow* window, int width, int height);
+
+	Settings loadSettings(const std::string& path);
 private:
+	Settings mSettings;
 	GLFWwindow* mWindow;
 
 	std::shared_ptr<Renderer> mRenderer;

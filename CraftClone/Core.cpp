@@ -12,6 +12,7 @@ namespace Global {
 Core::Core()
 {
 	Global::core = this;
+	mSettings = loadSettings("config.ini");
 }
 
 
@@ -26,6 +27,13 @@ void Core::createWindow(const std::string & title, const glm::vec2 & dim)
 {
 	mTitle = title;
 	mDimensions = dim;
+
+	if (dim.x == 0 || dim.y == 0) {
+		mDimensions.x = mSettings.width;
+		mDimensions.y = mSettings.height;
+	}
+
+
 	if (!glfwInit()) {
 		getLogger()->fatal("Failed to initialize GLFW");
 	}
@@ -97,4 +105,32 @@ void Core::glfwResizeCallback(GLFWwindow * window, int width, int height)
 {
 	resizeWindow(glm::vec2(width, height));
 	//getLogger()->debug(format("%i,%i", width, height));
+}
+
+Settings Core::loadSettings(const std::string & path)
+{
+	Settings setting;
+	ZeroMemory(&setting, sizeof(Settings));
+
+
+	lua_State *L = luaL_newstate();
+	luaopen_base(L);
+	luaopen_io(L);
+	luaopen_string(L);
+	luaopen_math(L);
+
+	if (luaL_loadfile(L, path.c_str()) || lua_pcall(L, 0, 0, 0)) {
+		getLogger()->error(format("Lua cannot open config file: %s", lua_tostring(L, -1)));
+		return setting;
+	}
+
+	lua_getglobal(L, "WIDTH");
+	setting.width = (int)lua_tonumber(L, -1);
+	lua_getglobal(L, "HEIGHT");
+	setting.height = (int)lua_tonumber(L, -1);
+
+	getLogger()->debug(format("Setting loaded. WIDTH: '%i', HEIGHT: '%i'", setting.width, setting.height));
+
+	lua_close(L);
+	return setting;
 }

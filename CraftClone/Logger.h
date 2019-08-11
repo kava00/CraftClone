@@ -2,7 +2,6 @@
 
 #include "Common.h"
 
-
 enum LogLevel {
 	Fatal,
 	Error,
